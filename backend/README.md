@@ -1,7 +1,7 @@
 # Backend - Instructions to execute
 1. To install dependencies:
 ```bash
-pip install requirements.txt
+pip install --upgrade -r requirements.txt
 ```
 2. To run the backend server:
 ```bash
