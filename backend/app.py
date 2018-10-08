@@ -7,7 +7,7 @@ from flask_restplus import Resource, Api, fields, inputs, reqparse
 app = Flask(__name__)
 api = Api(app,
         version='1.0',
-        default="Fuel Price"
+        default="Fuel Price",
         title='NSW fuel prices prediction data service',
         description='Data service which provide users a prediction of how the fuel prices will change in the future so they are able to make a better judgement on when to refill their fuel tanks.',
 )
