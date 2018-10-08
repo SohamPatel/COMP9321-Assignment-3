@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Fuel Price Predictor</title>
-    
+
     <!-- STYLES-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="{{url_for('static', filename='styles/bootstrap.min.css')}}" rel="stylesheet">
@@ -20,7 +20,7 @@
      <script src="{{url_for('static', filename='scripts/popper.min.js')}}"></script>
      <script src="{{url_for('static', filename='scripts/bootstrap.min.js')}}"></script>
      <script src="{{url_for('static', filename='scripts/mdb.min.js')}}"></script>
- 
+
      <script src="{{url_for('static', filename='scripts/base.js')}}"></script>
 
     <!--Main Navigation-->
@@ -30,7 +30,7 @@
             <div class="container">
 
                 <!-- Navbar brand -->
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand" href="#">Stack-Overflowers</a>
 
                 <!-- Collapse button -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
@@ -93,14 +93,28 @@
                         <div class="col-md-10">
 
                             <!-- Heading -->
-                            <h2 class="display-4 font-weight-bold white-text pt-5 mb-2">Travel</h2>
+                            <h2 class="display-4 font-weight-bold white-text pt-5 mb-2">Fuel Prices</h2>
 
                             <!-- Divider -->
                             <hr class="hr-light">
 
                             <!-- Description -->
-                            <h4 class="white-text my-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti consequuntur.</h4>
-                            <button type="button" class="btn btn-outline-white">Read more<i class="fa fa-book ml-2"></i></button>
+                            <h4 class="white-text my-4">To provide users a prediction of how the fuel prices will change in the future so they are able to make a better judgement on when to refill their fuel tanks.</h4>
+                            <form method="get">
+                              <input type="text" name="postcode" maxlength="4" pattern="[0-9]{4}" placeholder="Postcode">
+                              <input type="text" name="brand" placeholder="Fuel Brand">
+                              <input type="text" list="Fuel Type" name="fuelType" placeholder="Fuel Type">
+                              <datalist id="Fuel Type">
+                                <option value="E10">
+                                <option value="U91">
+                                <option value="P98">
+                                <option value="DL">
+                                <option value="LPG">
+                              </datalist>
+                              <input type="submit" class="btn btn-outline-white" value="Search">
+                              <!--<button type="button" class="btn btn-outline-white">Read more<i class="fa fa-book ml-2"></i></button>-->
+                            </form>
+
 
                         </div>
 
