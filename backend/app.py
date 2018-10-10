@@ -14,8 +14,10 @@ api = Api(app,
 
 @api.route('/fuelprice/<int:postcode>/<string:fueltype>/<string:brand>')
 class FuelPrice(Resource):
+    @api.response(404, 'Not found')
+    @api.response(200, 'Successful')
     @api.doc(description="Gets all predicted prices")
-    def get(self,postocde,fueltype,brand):
+    def get(self,postcode,fueltype,brand):
         return None;
 
 if __name__ == '__main__':
