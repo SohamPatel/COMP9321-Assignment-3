@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Fuel Price Predictor</title>
+    <title>PreFuel</title>
 
     <!-- STYLES-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -30,7 +30,7 @@
             <div class="container">
 
                 <!-- Navbar brand -->
-                <a class="navbar-brand" href="#">Stack-Overflowers</a>
+                <a class="navbar-brand" href="#">PreFuel</a>
 
                 <!-- Collapse button -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
@@ -44,16 +44,7 @@
                     <!-- Links -->
                     <ul class="navbar-nav mr-auto smooth-scroll">
                         <li class="nav-item">
-                            <a class="nav-link" href="#intro">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#best-features">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#examples">Examples</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#gallery">Gallery</a>
+                            <a class="nav-link" href="#about">About</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#contact">Contact</a>
@@ -81,7 +72,6 @@
         </nav>
         <!--/.Navbar-->
 
-        <!--Mask-->
         <div id="intro" class="view">
 
             <div class="mask rgba-black-strong">
@@ -90,17 +80,18 @@
 
                     <div class="row d-flex justify-content-center text-center">
 
-                        <div class="col-md-10">
+                        <div class="col-md-10 md-form">
 
                             <!-- Heading -->
-                            <h2 class="display-4 font-weight-bold white-text pt-5 mb-2">Fuel Prices</h2>
+                            <h3 class="display-4 font-weight-bold white-text pt-5 mb-3">PreFuel</h3>
 
                             <!-- Divider -->
                             <hr class="hr-light">
 
                             <!-- Description -->
-                            <h4 class="white-text my-4">To provide users a prediction of how the fuel prices will change in the future so they are able to make a better judgement on when to refill their fuel tanks.</h4>
-                            <form class="p-5" method="get">
+                            <h5 class="white-text my-5">Get a prediction of fuel prices, so you know when to refill your tank for less!</h5>
+                            
+                            <form id="searchForm" method="get">
                               <input type="text" class="" name="postcode" maxlength="4" pattern="[0-9]{4}" placeholder="Postcode">
                               <input type="text" name="brand" placeholder="Fuel Brand">
                               <input type="text" list="Fuel Type" name="fuelType" placeholder="Fuel Type">
@@ -111,21 +102,13 @@
                                 <option value="DL">
                                 <option value="LPG">
                               </datalist>
-                              <input type="submit" class="btn btn-outline-white" value="Search">
-                              <!--<button type="button" class="btn btn-outline-white">Read more<i class="fa fa-book ml-2"></i></button>-->
+                              <input id="searchButton" type="submit" class="btn btn-outline-white" value="Search">
                             </form>
-
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-        <!--/.Mask-->
 
     </header>
     <!--Main Navigation-->
@@ -192,72 +175,40 @@
                 <!--First column-->
                 <div class="col-md-3 col-lg-4 col-xl-3 mb-4">
                     <h6 class="text-uppercase font-weight-bold">
-                        <strong>Company name</strong>
+                        <strong>Stack-Overflowers</strong>
                     </h6>
                     <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-                    <p>Here you can use rows and columns here to organize your footer content. Lorem ipsum dolor sit
-                        amet, consectetur adipisicing elit.</p>
+                    <p>Data Services Engineering (COMP9321) Machine Learning Assignment 3.</p>
                 </div>
                 <!--/.First column-->
 
                 <!--Second column-->
-                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                    <h6 class="text-uppercase font-weight-bold">
-                        <strong>Products</strong>
-                    </h6>
-                    <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-                    <p>
-                        <a href="#!">MDBootstrap</a>
-                    </p>
-                    <p>
-                        <a href="#!">MDWordPress</a>
-                    </p>
-                    <p>
-                        <a href="#!">BrandFlow</a>
-                    </p>
-                    <p>
-                        <a href="#!">Bootstrap Angular</a>
-                    </p>
-                </div>
-                <!--/.Second column-->
-
-                <!--Third column-->
                 <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                     <h6 class="text-uppercase font-weight-bold">
                         <strong>Useful links</strong>
                     </h6>
                     <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
                     <p>
-                        <a href="#!">Your Account</a>
+                        <a href="https://www.fuelcheck.nsw.gov.au/app">Fuel Check</a>
                     </p>
                     <p>
-                        <a href="#!">Become an Affiliate</a>
-                    </p>
-                    <p>
-                        <a href="#!">Shipping Rates</a>
-                    </p>
-                    <p>
-                        <a href="#!">Help</a>
+                        <a href="https://data.nsw.gov.au/data/dataset/fuel-check">Datasets</a>
                     </p>
                 </div>
-                <!--/.Third column-->
+                <!--/.Second column-->
 
-                <!--Fourth column-->
-                <div class="col-md-4 col-lg-3 col-xl-3">
+                <!--Third column-->
+                <div id="contact" class="col-md-4 col-lg-3 col-xl-3">
                     <h6 class="text-uppercase font-weight-bold">
                         <strong>Contact</strong>
                     </h6>
                     <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
                     <p>
-                        <i class="fa fa-home mr-3"></i> New York, NY 10012, US</p>
+                        <i class="fa fa-home mr-3"></i>University of New South Wales</p>
                     <p>
-                        <i class="fa fa-envelope mr-3"></i> info@example.com</p>
-                    <p>
-                        <i class="fa fa-phone mr-3"></i> + 01 234 567 88</p>
-                    <p>
-                        <i class="fa fa-print mr-3"></i> + 01 234 567 89</p>
+                        <i class="fa fa-envelope mr-3"></i>soham.patel@student.unsw.edu.au</p>
                 </div>
-                <!--/.Fourth column-->
+                <!--/.Third column-->
 
             </div>
         </div>
