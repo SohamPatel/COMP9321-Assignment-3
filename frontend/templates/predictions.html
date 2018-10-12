@@ -1,35 +1,186 @@
 {% extends "base.html" %}
 {% block body_contents %}
+<link href="{{url_for('static', filename='styles/predictions.css')}}" rel="stylesheet">
+
 <!--Section: Best Features-->
-<section id="about" class="text-center">
+<section id="about" class="jumbotron text-center">
 
     <h2 class="mb-5 font-weight-bold">Predictions</h2>
 
-    <div class="row d-flex justify-content-center mb-4">
-        <div class="col-md-8">
-            <p class="grey-text">Pre-Fuel is a web application which performs machine learning on datasets retreieved from NSW Government to predict future fuel prices. Prediction is made using Python's Scikit using the Regression Model.</p>
-
+    <div class="row d-flex justify-content-center mb-3">
+        <div class="mb-3 col-md-6">
+            <h6> <b class="font-weight-bold">Postcode:</b> {{postcode}}</h6>
+            <h6> <b class="font-weight-bold">Brand:</b> {{brand}}</h6>
+            <h6> <b class="font-weight-bold">Fuel Type:</b> {{fuel_type}}</h6>
+        </div>
+        <div class="mb-3 col-md-6">
+            <h5 class="mb-3">Fuel is the cheapest on <span class="badge badge-pill green">{{cheapest_date}}</span>, <br><br>with its price being <span class="badge badge-pill green">${{cheapest_price}}</span></h5>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-4 mb-5">
-            <i class="fa fa-location-arrow fa-4x orange-text"></i>
-            <h4 class="my-4 font-weight-bold">Area</h4>
-            <p class="grey-text">Enter an area, brand and type of fuel whose price you want to predict.</p>
-        </div>
+    <hr class="hr-dark wow fadeInLeft" data-wow-delay="0.3s">
 
-        <div class="col-md-4 mb-1">
-            <i class="fa fa-dollar fa-4x orange-text"></i>
-            <h4 class="my-4 font-weight-bold">Predict</h4>
-            <p class="grey-text">Get a prediction of fuel prices in your area for upto two weeks.</p>
-        </div>
-
-        <div class="col-md-4 mb-1">
-            <i class="fa fa-car fa-4x orange-text"></i>
-            <h4 class="my-4 font-weight-bold">Refill</h4>
-            <p class="grey-text">Refill you fuel tanks on the day which is the cheapest to make the most savings.</p>
-        </div>
-    </div>
+    <table id="dtMaterialDesignExample" class="table table-striped" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th class="th-sm">Date
+                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                </th>
+                <th class="th-sm">Price (¢)
+                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                </th>
+                <th class="th-sm">Accuracy (%)
+                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>15/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>160.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>15/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>160.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>15/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>160.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>15/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>160.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>15/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>160.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>15/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>160.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>15/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>160.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>15/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>160.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>15/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>160.78</td>
+                <td>88</td>
+            </tr>
+            <tr>
+                <td>16/11/2018</td>
+                <td>154.78</td>
+                <td>88</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Date
+                </th>
+                <th>Price (¢)
+                </th>
+                <th>Accuracy (%)
+                </th>
+            </tr>
+        </tfoot>
+    </table>
 </section>
 {% endblock %}
