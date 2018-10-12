@@ -11,7 +11,7 @@
     <link href="{{url_for('static', filename='styles/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{url_for('static', filename='styles/mdb.min.css')}}" rel="stylesheet">
 
-    <link href="{{url_for('static', filename='styles/base.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='styles/home_base.css')}}" rel="stylesheet">
     <!--Google Maps-->
 </head>
 <body>
@@ -24,13 +24,13 @@
      <script src="{{url_for('static', filename='scripts/base.js')}}"></script>
 
     <!--Main Navigation-->
-    <header id="intro">
+    <header>
         <!--Navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
             <div class="container">
 
                 <!-- Navbar brand -->
-                <a class="navbar-brand" href="/">PreFuel</a>
+                <a class="navbar-brand" href="">PreFuel</a>
 
                 <!-- Collapse button -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
@@ -44,10 +44,10 @@
                     <!-- Links -->
                     <ul class="navbar-nav mr-auto smooth-scroll">
                         <li class="nav-item">
-                            <a class="nav-link" href="/#about">About</a>
+                            <a class="nav-link" href="#about">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/#contact">Contact</a>
+                            <a class="nav-link" href="#contact">Contact</a>
                         </li>
                     </ul>
                     <!-- Links -->
@@ -71,6 +71,44 @@
             </div>
         </nav>
         <!--/.Navbar-->
+
+        <div id="intro" class="view">
+
+            <div class="mask rgba-black-strong">
+
+                <div class="container-fluid d-flex align-items-center justify-content-center h-100">
+
+                    <div class="row d-flex justify-content-center text-center">
+
+                        <div class="col-md-10 md-form">
+
+                            <!-- Heading -->
+                            <h3 class="display-4 font-weight-bold white-text pt-5 mb-3">PreFuel</h3>
+
+                            <!-- Divider -->
+                            <hr class="hr-light">
+
+                            <!-- Description -->
+                            <h5 class="white-text my-5">Get a prediction of fuel prices, so you know when to refill your tank for less!</h5>
+                            
+                            <form id="searchForm" method="get" action="{{url_for('predict')}}">
+                              <input type="text" class="white-text" name="postcode" maxlength="4" pattern="[0-9]{4}" placeholder="Postcode">
+                              <input type="text" class="white-text" name="brand" placeholder="Fuel Brand">
+                              <input type="text" class="white-text" list="Fuel Type" name="type" placeholder="Fuel Type">
+                              <datalist class="white-text" id="Fuel Type">
+                                <option value="E10">
+                                <option value="U91">
+                                <option value="P98">
+                                <option value="DL">
+                                <option value="LPG">
+                              </datalist>
+                              <input id="searchButton" type="submit" class="btn btn-outline-white" value="Search">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </header>
     <!--Main Navigation-->

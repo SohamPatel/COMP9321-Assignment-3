@@ -2,7 +2,7 @@ html,
 body,
 header,
 #intro {
-    height: 40%;
+    height: 100%;
 }
 
 #intro {
@@ -22,12 +22,12 @@ header,
   margin-top: 5%;
 }
 
-.top-nav-collapse {
-  background: #24355C;
+#about {
+  padding-top: 80px;
 }
 
-.navbar:not(.top-nav-collapse) {
-  background: url("https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/r8K5nG9Pxiyh9wvn6/videoblocks-abstract-blue-geometric-background-with-moving-lines-dots-and-triangles-plexus-fantasy-abstract-technology-loop-animations_ho4lwcmzb_thumbnail-full01.png")no-repeat center center fixed;
+.top-nav-collapse {
+    background-color: #24355C;
 }
 
 @media (max-width: 768px) {
