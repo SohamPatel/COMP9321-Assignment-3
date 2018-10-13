@@ -1,15 +1,16 @@
 import pandas as pd
 from sklearn import linear_model, preprocessing
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, explained_variance_score, r2_score
 from sklearn.utils import shuffle
 import numpy as np
 import sys
+from sklearn.ensemble import RandomForestRegressor
 
 def load_xlsx(xlsx_file):
     df = pd.read_excel(xlsx_file, index_col=0)
     df.dropna(inplace=True)
     df = df.reset_index()
-    df = shuffle(df)
+    df = shuffle(df, random_state=0)
     return df
 
 
@@ -37,27 +38,69 @@ def split_df(df, not_dropping, split_percentage):
     return X_train, y_train, X_test, y_test
 
 def train_model(not_dropping):
-    model = linear_model.LinearRegression()
     x_train, y_train, x_test, y_test = split_df(df, not_dropping, 0.7)
-    model.fit(x_train, y_train)
 
-    # test model
-    y_pred = model.predict(x_test)
+    # standardise x values as features vary greatly -- doesn't do anything?
+    # scaler = preprocessing.StandardScaler().fit(x_train)
+    # x_train = scaler.transform(x_train)
+    # x_test = scaler.transform(x_test)
 
-    # The mean squared error
-    mse = mean_squared_error(y_test, y_pred)
-    print("Mean squared error: %.2f\n" % mse)
+    global lowest_error, combination, highest_score, r2_combination
+    global rf_highest_score, rf_r2_combination, regression, random_forest
 
-    global lowest_error, combination
-    if mse < lowest_error:
-        lowest_error = mse
-        combination = not_dropping
+    if regression:
+        model = linear_model.LinearRegression()
+        model.fit(x_train, y_train)
+        # test model
+        y_pred = model.predict(x_test)
+
+        # The mean squared error
+        mse = mean_squared_error(y_test, y_pred)
+        print("Mean squared error: %.2f" % mse)
+
+        # Variance score
+        # var = explained_variance_score(y_test, y_pred)
+        # print("Explained variance score: %.2f\n" % var)
+
+        # r2 score
+        r2 = r2_score(y_test, y_pred)
+        print("r2 score: %.2f\n" % r2)
+
+        if mse < lowest_error:
+            lowest_error = mse
+            combination = not_dropping
+
+        if r2 > highest_score:
+            highest_score = r2
+            r2_combination = not_dropping
+
+    if random_forest:
+        rf = RandomForestRegressor(n_estimators=500, oob_score=True, random_state=0)
+        rf.fit(x_train, y_train)
+
+        y_pred = rf.predict(x_test)
+
+        r2 = r2_score(y_test, y_pred)
+        print("r2 score: %.2f\n" % r2)
+
+        if r2 > rf_highest_score:
+            rf_highest_score = r2
+            rf_r2_combination = not_dropping
+
 
 if __name__ == '__main__':
 
-    # global var to determine lowest error
+    # global vars to determine lowest error and highest score
     lowest_error = int(sys.maxsize)
     combination = []
+    highest_score = 0
+    r2_combination = []
+    rf_highest_score = 0
+    rf_r2_combination = []
+
+    # global vars to determine which models to use
+    regression = True
+    random_forest = True
 
     df = load_xlsx("test.xlsx")
 
@@ -162,10 +205,6 @@ if __name__ == '__main__':
     print("Params: Postcode, Brand, FuelCode, Address")
     train_model(['Postcode', 'Brand', 'FuelCode', 'Address'])
 
-    # Use Postcode, Brand, FuelCode, Address as parameters
-    print("Params: Postcode, Brand, FuelCode, Address")
-    train_model(['Postcode', 'Brand', 'FuelCode', 'Address'])
-
     # Use Postcode, FuelCode, Address, Date as parameters
     print("Params: Postcode, FuelCode, Address, Date")
     train_model(['Postcode', 'FuelCode', 'Address', 'PriceUpdatedDate'])
@@ -187,3 +226,5 @@ if __name__ == '__main__':
     train_model(['Postcode', 'Brand', 'FuelCode', 'Address', 'PriceUpdatedDate'])
 
     print("Lowest Error Combination: " + ' '.join(combination))
+    print("Highest r2 Score Combination: " + ' '.join(r2_combination))
+    print("Highest rf r2 Score Combination: " + ' '.join(rf_r2_combination))
