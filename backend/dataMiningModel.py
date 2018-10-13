@@ -101,17 +101,20 @@ if __name__ == '__main__':
     postBrandError = list()
     postFuelError = list()
     brandFuelError = list()
+    bankFuelUpdatePirce  = list()
     for i in range(0,50):
         df = read_csv('test.csv')
         postcodeError.append(trainingModel(df, drop = []))
         postBrandError.append(trainingModel(df, drop = ['Brand']))
         postFuelError.append(trainingModel(df, drop = ['FuelCode']))
         brandFuelError.append(trainingModel(df, drop = ['Brand','FuelCode']))
+        bankFuelUpdatePirce.append(trainingModel(df, drop = ['Brand','FuelCode','PriceUpdatedDate']))
 
     for name, information in [("Postcode",postcodeError),
                             ("Postcode & Brand",postBrandError),
                             ("Postcode & Fuel Type",postFuelError),
-                            ("PostCode & Fuel Type & Brand",brandFuelError)]:
+                            ("PostCode & Fuel Type & Brand",brandFuelError),
+                            ("PostCode & Fuel Type & Brand & UpdatePrice",bankFuelUpdatePirce)]:
         pprint.pprint(name)
         pprint.pprint("Average: " + str(np.mean(information)))
         pprint.pprint("Minimum: " + str(np.min(information)))
