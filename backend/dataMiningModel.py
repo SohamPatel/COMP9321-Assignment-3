@@ -39,13 +39,20 @@ def load_csv(df, split_percentage, droped = []):
     return X_train, y_train, X_test, y_test
 
     '''Test section'''
-def read_csv(diet_path,):
+def read_csv(diet_path):
+    '''
+    Given a path or a csv file it read the csv file
+    And return a pandas df file with the content shuffled content
+    '''
     df = pd.read_csv(diet_path, index_col=0)
     df.dropna(inplace=True)
     df = df.reset_index()
     return shuffle(df)
 
 def getNoDupList(df,column):
+    '''
+    Gets a list of a df's column and removes all duplicates
+    '''
     if(column == 'ServiceStationName'):
         column = df.index.tolist()
     else:
@@ -55,6 +62,9 @@ def getNoDupList(df,column):
     return noDup
 
 def replaceValues(df, columnTitle):
+    '''
+    Replace string values of a df to an integer
+    '''
 #    noDupList = getNoDupList(df, columnTitle)
 #    for i in noDupList:
 #        df[columnTitle].replace(to_replace=[i],value=noDupList.index(i),inplace=True)
@@ -62,6 +72,11 @@ def replaceValues(df, columnTitle):
     return df
 
 def trainingModel(df, drop = []):
+    '''
+    Return the mean squared error of a df
+    The put values that you want to keep in the drop array
+    Values can be ['Price','PriceUpdatedDate','FuelCode','Brand','Suburb','Address','ServiceStationName']
+    '''
     X_train, y_train, X_test, y_test = load_csv(df, split_percentage=0.7, droped = drop)
     model = linear_model.LinearRegression()
     model.fit(X_train, y_train)
@@ -80,7 +95,6 @@ def trainingModel(df, drop = []):
 if __name__ == '__main__':
 
     #xlsx_to_csv_pd()
-    #['Price','PriceUpdatedDate','FuelCode','Brand','Suburb','Address','ServiceStationName']
 
     #Finding errors
     postcodeError = list()
