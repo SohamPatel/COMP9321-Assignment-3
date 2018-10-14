@@ -51,6 +51,8 @@ def read_csv(diet_path):
 
 def getNoDupList(df,column):
     '''
+    Preconditions: Assume that the df doesnt have any NaN vales
+                    Assumes that ServiceStationName is the index
     Gets a list of a df's column and removes all duplicates
     '''
     if(column == 'ServiceStationName'):

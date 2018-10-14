@@ -12,12 +12,12 @@ api = Api(app,
         description='Data service which provide users a prediction of how the fuel prices will change in the future so they are able to make a better judgement on when to refill their fuel tanks.',
 )
 
-@api.route('/fuelprice/<int:postcode>/<string:fueltype>/<string:brand>')
+@api.route('/fuelprice/<int:postcode>/<string:fueltype>/<string:brand>/<string:date>')
 class FuelPrice(Resource):
     @api.response(404, 'Not found')
     @api.response(200, 'Successful')
     @api.doc(description="Gets all predicted prices")
-    def get(self,postcode,fueltype,brand):
+    def get(self,postcode,fueltype,brand,date):
         return None;
 
 if __name__ == '__main__':
