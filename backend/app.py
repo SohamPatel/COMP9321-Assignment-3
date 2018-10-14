@@ -55,9 +55,6 @@ class FuelPrice(Resource):
             fuel_prices = list(fuelprice_df['FuelPrice'])
             return fuel_prices,200
 
-
-        return None
-
 @api.route('/getBrands')
 class FuelBrands(Resource):
     @api.expect(brand_parser, validate=True)
