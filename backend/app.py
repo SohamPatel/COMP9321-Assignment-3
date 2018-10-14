@@ -33,6 +33,29 @@ class FuelPrice(Resource):
     @api.response(200, 'Successful')
     @api.doc(description="Gets all predicted prices given a postcode, type of fuel and its brand")
     def get(self,postcode,fueltype,brand):
+        args = fuel_price_parser.parse_args()
+        postcode = args.get('postcode')
+        fueltype = args.get('fueltype')
+        brand  = args.get('brand')
+
+        fuelprice_df  = df.query(f'Postcod == {postcode} and  Brand == {brand} and fueltype = {fueltype}')
+        print(fuelprice_df.empty)
+        if fuelprice_df.empty:
+             # Invalia postcode and/or brand and/or fueltype
+            output_response = {
+                "message" :f'No Fuel Type found using the given arguments! please check if it is a valid Postcode、Brand and FuelType'
+            }
+            return output_response,400
+
+        else:
+            # keep fuel price column only
+            fuelprice_df = fuelprice_df[['Fuelprice']]
+            # remove duplicate fuel types
+            fuelprice_df = fuelprice_df.drop_duplicates('FuelPrice')
+            fuel_prices = list(fuelprice_df['FuelPrice'])
+            return fuel_prices,200
+
+
         return None
 
 @api.route('/getBrands')
@@ -92,33 +115,34 @@ class FuelTypes(Resource):
             fuel_types = list(fueltype_df['FuelCode'])
             return fuel_types, 200
 
-class FuelPrice(Resource):
-    @api.expect(fuel_price_parser, validate=True)
-    @api.make_response(400,'Not found')
-    @api.make_response(200,'Successful')
-    @api.doc(description='Get all fuel price for the given postcode、brand and fuel type')
-    def get(self):
-        args = fuel_price_parser.parse_args()
-        postcode = args.get('postcode')
-        brand = args.get('brand')
-        fueltype = args.get('fueltype')
-
-        fuelprice_df = df.query(f'Postcod == {postcode} and  Brand == {brand} and fueltype = {fueltype}')
-        print(fuelprice_df.empty)
-        if fuelprice_df.empty:
-             # Invalia postcode and/or brand and/or fueltype
-            output_response = {
-                "message" :f'No Fuel Price found using the given arguments! please check if it is a valid Postcode、Brand and FuelType'
-            }
-            return output_response,400
-
-        else:
-            # keep fuel price column only
-            fuelprice_df = fuelprice_df[['Fuelprice']]
-            # remove duplicate fuel types
-            fuelprice_df = fuelprice_df.drop_duplicates('FuelPrice')
-            fuel_prices = list(fuelprice_df['FuelPrice'])
-            return fuel_prices,200
+# @api.router('/getPrices')
+# class FuelPrice(Resource):
+#     @api.expect(fuel_price_parser, validate=True)
+#     @api.make_response(400,'Not found')
+#     @api.make_response(200,'Successful')
+#     @api.doc(description='Get all fuel price for the given postcode、brand and fuel type')
+#     def get(self):
+#         args = fuel_price_parser.parse_args()
+#         postcode = args.get('postcode')
+#         brand = args.get('brand')
+#         fueltype = args.get('fueltype')
+#
+#         fuelprice_df = df.query(f'Postcod == {postcode} and  Brand == {brand} and fueltype = {fueltype}')
+#         print(fuelprice_df.empty)
+#         if fuelprice_df.empty:
+#              # Invalia postcode and/or brand and/or fueltype
+#             output_response = {
+#                 "message" :f'No Fuel Type found using the given arguments! please check if it is a valid Postcode、Brand and FuelType'
+#             }
+#             return output_response,400
+#
+#         else:
+#             # keep fuel price column only
+#             fuelprice_df = fuelprice_df[['Fuelprice']]
+#             # remove duplicate fuel types
+#             fuelprice_df = fuelprice_df.drop_duplicates('FuelPrice')
+#             fuel_prices = list(fuelprice_df['FuelPrice'])
+#             return fuel_prices,200
 
 
 
