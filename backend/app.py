@@ -108,7 +108,7 @@ class FuelPrice(Resource):
         if fuelprice_df.empty:
              # Invalia postcode and/or brand and/or fueltype
             output_response = {
-                "message" :f'No Fuel Type found using the given arguments! please check if it is a valid Postcode、Brand and FuelType'
+                "message" :f'No Fuel Price found using the given arguments! please check if it is a valid Postcode、Brand and FuelType'
             }
             return output_response,400
 
