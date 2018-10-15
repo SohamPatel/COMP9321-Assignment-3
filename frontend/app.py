@@ -20,4 +20,4 @@ def predict():
     return render_template('predictions.html', postcode=postcode, brand=brand, fuel_type=fuel_type, cheapest_price=cheapest_price, cheapest_date=cheapest_date)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)

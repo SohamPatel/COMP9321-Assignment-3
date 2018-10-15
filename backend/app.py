@@ -17,6 +17,8 @@ api = Api(app,
         description='Data service which provide users a prediction of how the fuel prices will change in the future so they are able to make a better judgement on when to refill their fuel tanks.',
 )
 
+dataset_file = 'Fuel_Dataset.xlsx'
+
 brand_parser = reqparse.RequestParser()
 brand_parser.add_argument('postcode', type=int)
 
@@ -169,7 +171,7 @@ def preprocess_data(df):
 
 if __name__ == '__main__':
     drop_list = ['ServiceStationName', 'Address', 'Suburb']
-    df = load_xlsx('test.xlsx')
+    df = load_xlsx(dataset_file)
     df = df.drop(columns=drop_list)
 
     brand_le = preprocessing.LabelEncoder()
@@ -185,4 +187,4 @@ if __name__ == '__main__':
     model.fit(x_train, y_train)
 
     # run the application
-    app.run(debug=True)
+    app.run(debug=True, port=5100)
