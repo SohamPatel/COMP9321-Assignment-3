@@ -74,6 +74,9 @@ def requires_auth(f):
 
 dataset_file = 'Fuel_Dataset.xlsx'
 
+authorization_parser = reqparse.RequestParser()
+authorization_parser.add_argument('username', type=str)
+
 brand_parser = reqparse.RequestParser()
 brand_parser.add_argument('postcode', type=int)
 
@@ -85,6 +88,31 @@ fuel_price_parser = reqparse.RequestParser()
 fuel_price_parser.add_argument('postcode',type = int)
 fuel_price_parser.add_argument('brand',type = str)
 fuel_price_parser.add_argument('fueltype', type =str)
+
+credential_model = api.model('credential', {
+    'username': fields.String,
+    'password': fields.String
+})
+
+credential_parser = reqparse.RequestParser()
+credential_parser.add_argument('username', type=str)
+credential_parser.add_argument('password', type=str)
+
+@api.route('/token')
+class Token(Resource):
+    @api.response(200, 'Successful')
+    @api.doc(description="Generates a authentication token")
+    @api.expect(credential_parser, validate=True)
+    def get(self):
+        args = credential_parser.parse_args()
+
+        username = args.get('username')
+        password = args.get('password')
+
+        if username == 'admin' and password == 'admin':
+            return {"token": auth.generate_token(username)}
+
+        return {"message": "authorization has been refused for those credentials."}, 401
 
 @api.route('/getFuelPredictions')
 class FuelPrice(Resource):
