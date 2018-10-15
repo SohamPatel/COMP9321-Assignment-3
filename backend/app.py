@@ -2,20 +2,75 @@ import json
 import requests
 import pandas as pd
 from flask import Flask, request
-from flask_restplus import Resource, Api, fields, inputs, reqparse
+from flask_restplus import Resource, Api, fields, inputs, reqparse,abort
 from sklearn.utils import shuffle
 from sklearn import preprocessing, linear_model
 from sklearn.ensemble import RandomForestRegressor
 from datetime import datetime, timedelta
 import numpy as np
+from itsdangerous import SignatureExpired, JSONWebSignatureSerializer, BadSignature
+from functools import wraps
+from time import time
+
+class AuthenticationToken:
+    def __init__(self, secret_key,expires_in):
+        self.secret_key = secret_key
+        self.expires_in = expires_in
+        self.serializer = JSONWebSignatureSerializer(secret_key)
+
+    def generate_token(self,username):
+        info = {
+            'username': username,
+            'creation_time': time()
+        }
+
+        token = self.serializer.dump(info)
+        return token.decode()
+
+    def validata_token(self,token):
+        info = self.serializer.load(token.encode())
+
+        if time() - info['creation_time'] >self.expires_in:
+            raise SignatureExpired("The token has been expired: Get a new token")
+        return info['username']
+
+SECRET_KRY = 'this is test for authentication token'
+expires_in = 600
+auth = AuthenticationToken(SECRET_KRY,expires_in)
+
 
 app = Flask(__name__)
-api = Api(app,
+api = Api(app, authorizations={
+    'API_KEY':{
+        'type' :'apiKey',
+        'in' : 'header',
+        'name' : 'AUTH-TOKEN'
+
+    }
+},
+        security='API_KEY',
         version='1.0',
         default="Fuel Price",
         title='NSW fuel prices prediction data service',
         description='Data service which provide users a prediction of how the fuel prices will change in the future so they are able to make a better judgement on when to refill their fuel tanks.',
 )
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args,**kwargs):
+        token = request.headers.get('AUTH-TOKEN')
+        if not token:
+            abort(401,'Authentication is missing')
+        try:
+            user = auth.validata_token(token)
+        except SignatureExpired as e:
+            abort(401, e.message)
+        except BadSignature as e:
+            abort(401, e.message)
+        return f(*args,**kwargs)
+    return decorated
+
+
 
 dataset_file = 'Fuel_Dataset.xlsx'
 
