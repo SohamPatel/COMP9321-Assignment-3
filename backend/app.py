@@ -13,25 +13,26 @@ from functools import wraps
 from time import time
 
 class AuthenticationToken:
-    def __init__(self, secret_key,expires_in):
+    def __init__(self, secret_key, expires_in):
         self.secret_key = secret_key
         self.expires_in = expires_in
         self.serializer = JSONWebSignatureSerializer(secret_key)
 
-    def generate_token(self,username):
+    def generate_token(self, username):
         info = {
             'username': username,
             'creation_time': time()
         }
 
-        token = self.serializer.dump(info)
+        token = self.serializer.dumps(info)
         return token.decode()
 
-    def validata_token(self,token):
-        info = self.serializer.load(token.encode())
+    def validate_token(self, token):
+        info = self.serializer.loads(token.encode())
 
-        if time() - info['creation_time'] >self.expires_in:
-            raise SignatureExpired("The token has been expired: Get a new token")
+        if time() - info['creation_time'] > self.expires_in:
+            raise SignatureExpired("The Token has been expired; get a new token")
+
         return info['username']
 
 SECRET_KRY = 'this is test for authentication token'
@@ -57,25 +58,27 @@ api = Api(app, authorizations={
 
 def requires_auth(f):
     @wraps(f)
-    def decorated(*args,**kwargs):
+    def decorated(*args, **kwargs):
+
         token = request.headers.get('AUTH-TOKEN')
         if not token:
-            abort(401,'Authentication is missing')
+            abort(401, 'Authentication token is missing')
+
         try:
-            user = auth.validata_token(token)
+            user = auth.validate_token(token)
         except SignatureExpired as e:
             abort(401, e.message)
         except BadSignature as e:
             abort(401, e.message)
-        return f(*args,**kwargs)
+
+        return f(*args, **kwargs)
+
     return decorated
 
 
 
 dataset_file = 'Fuel_Dataset.xlsx'
 
-authorization_parser = reqparse.RequestParser()
-authorization_parser.add_argument('username', type=str)
 
 brand_parser = reqparse.RequestParser()
 brand_parser.add_argument('postcode', type=int)
@@ -98,6 +101,9 @@ credential_parser = reqparse.RequestParser()
 credential_parser.add_argument('username', type=str)
 credential_parser.add_argument('password', type=str)
 
+df = pd.read_csv("UserInformation.csv", index_col=0)
+#usernameList = df['username'].values
+
 @api.route('/token')
 class Token(Resource):
     @api.response(200, 'Successful')
@@ -110,8 +116,10 @@ class Token(Resource):
         password = args.get('password')
 
         if username == 'admin' and password == 'admin':
+        #if username in df['username']:
             return {"token": auth.generate_token(username)}
-
+        else:
+            print("xxx")
         return {"message": "authorization has been refused for those credentials."}, 401
 
 @api.route('/getFuelPredictions')
