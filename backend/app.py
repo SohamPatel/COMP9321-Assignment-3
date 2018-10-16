@@ -101,7 +101,7 @@ credential_parser = reqparse.RequestParser()
 credential_parser.add_argument('username', type=str)
 credential_parser.add_argument('password', type=str)
 
-df = pd.read_csv("UserInformation.csv", index_col=0)
+#df = pd.read_csv("UserInformation.csv", index_col=0)
 #usernameList = df['username'].values
 
 @api.route('/token')
