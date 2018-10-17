@@ -18,9 +18,10 @@ class AuthenticationToken:
         self.expires_in = expires_in
         self.serializer = JSONWebSignatureSerializer(secret_key)
 
-    def generate_token(self, username):
+    def generate_token(self, username,password):
         info = {
             'username': username,
+            'password': password,
             'creation_time': time()
         }
 
@@ -115,12 +116,19 @@ class Token(Resource):
         username = args.get('username')
         password = args.get('password')
 
-        if username == 'admin' and password == 'admin':
-        #if username in df['username']:
-            return {"token": auth.generate_token(username)}
+        username = [username]
+        df_username = pd.read_csv('UserInformation.csv')
+        usernamelist = np.array(df_username[['username']]).tolist()
+        password_df = df_username.query(f'username == {username}')
+
+        if password_df.empty or username not in usernamelist:
+            output_response = {
+                "message :"f'username/password is incorrect'
+            }
+            return output_response, 401
         else:
-            print("xxx")
-        return {"message": "authorization has been refused for those credentials."}, 401
+            return {"token":auth.generate_token(username,password)}
+
 
 @api.route('/getFuelPredictions')
 class FuelPrice(Resource):
