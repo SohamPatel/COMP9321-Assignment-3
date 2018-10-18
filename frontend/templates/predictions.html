@@ -14,7 +14,7 @@
             <h6> <b class="font-weight-bold">Fuel Type:</b> {{fuel_type}}</h6>
         </div>
         <div class="mb-3 col-md-6">
-            <h5 class="mb-3">Fuel is the cheapest on <span class="badge badge-pill green">{{cheapest_date}}</span>, <br><br>with its price being <span class="badge badge-pill green">${{cheapest_price}}</span></h5>
+            <h5 class="mb-3">Fuel is the cheapest on <span class="badge badge-pill green">{{cheapest_date}}</span>, <br><br>with its price being <span class="badge badge-pill green">¢{{cheapest_price}}</span></h5>
         </div>
     </div>
 
@@ -29,158 +29,16 @@
                 <th class="th-sm">Price (¢)
                     <i class="fa fa-sort float-right" aria-hidden="true"></i>
                 </th>
-                <th class="th-sm">Accuracy (%)
-                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                </th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>15/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>160.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>15/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>160.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>15/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>160.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>15/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>160.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>15/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>160.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>15/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>160.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>15/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>160.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>15/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>160.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>15/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>160.78</td>
-                <td>88</td>
-            </tr>
-            <tr>
-                <td>16/11/2018</td>
-                <td>154.78</td>
-                <td>88</td>
-            </tr>
+            {% for row in predictions %}
+                <tr>
+                    <td>{{row.date}}</td>
+                    <td>{{row.predicted_price}}</td>
+                </tr>
+            {% endfor %}
         </tbody>
-        <tfoot>
-            <tr>
-                <th>Date
-                </th>
-                <th>Price (¢)
-                </th>
-                <th>Accuracy (%)
-                </th>
-            </tr>
-        </tfoot>
     </table>
 </section>
 {% endblock %}

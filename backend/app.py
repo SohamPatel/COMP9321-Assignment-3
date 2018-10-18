@@ -2,20 +2,84 @@ import json
 import requests
 import pandas as pd
 from flask import Flask, request
-from flask_restplus import Resource, Api, fields, inputs, reqparse
+from flask_restplus import Resource, Api, fields, inputs, reqparse,abort
 from sklearn.utils import shuffle
 from sklearn import preprocessing, linear_model
 from sklearn.ensemble import RandomForestRegressor
 from datetime import datetime, timedelta
 import numpy as np
+from itsdangerous import SignatureExpired, JSONWebSignatureSerializer, BadSignature
+from functools import wraps
+from time import time
+
+class AuthenticationToken:
+    def __init__(self, secret_key, expires_in):
+        self.secret_key = secret_key
+        self.expires_in = expires_in
+        self.serializer = JSONWebSignatureSerializer(secret_key)
+
+    def generate_token(self, username,password):
+        info = {
+            'username': username,
+            'password': password,
+            'creation_time': time()
+        }
+
+        token = self.serializer.dumps(info)
+        return token.decode()
+
+    def validate_token(self, token):
+        info = self.serializer.loads(token.encode())
+
+        if time() - info['creation_time'] > self.expires_in:
+            raise SignatureExpired("The Token has been expired; get a new token")
+
+        return info['username']
+
+SECRET_KRY = 'this is test for authentication token'
+expires_in = 600
+auth = AuthenticationToken(SECRET_KRY,expires_in)
+
 
 app = Flask(__name__)
-api = Api(app,
+api = Api(app, authorizations={
+    'API_KEY':{
+        'type' :'apiKey',
+        'in' : 'header',
+        'name' : 'AUTH-TOKEN'
+
+    }
+},
+        security='API_KEY',
         version='1.0',
         default="Fuel Price",
         title='NSW fuel prices prediction data service',
         description='Data service which provide users a prediction of how the fuel prices will change in the future so they are able to make a better judgement on when to refill their fuel tanks.',
 )
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+
+        token = request.headers.get('AUTH-TOKEN')
+        if not token:
+            abort(401, 'Authentication token is missing')
+
+        try:
+            user = auth.validate_token(token)
+        except SignatureExpired as e:
+            abort(401, e.message)
+        except BadSignature as e:
+            abort(401, e.message)
+
+        return f(*args, **kwargs)
+
+    return decorated
+
+
+
+dataset_file = 'Fuel_Dataset.xlsx'
+
 
 brand_parser = reqparse.RequestParser()
 brand_parser.add_argument('postcode', type=int)
@@ -28,6 +92,43 @@ fuel_price_parser = reqparse.RequestParser()
 fuel_price_parser.add_argument('postcode',type = int)
 fuel_price_parser.add_argument('brand',type = str)
 fuel_price_parser.add_argument('fueltype', type =str)
+
+credential_model = api.model('credential', {
+    'username': fields.String,
+    'password': fields.String
+})
+
+credential_parser = reqparse.RequestParser()
+credential_parser.add_argument('username', type=str)
+credential_parser.add_argument('password', type=str)
+
+#df = pd.read_csv("UserInformation.csv", index_col=0)
+#usernameList = df['username'].values
+
+@api.route('/token')
+class Token(Resource):
+    @api.response(200, 'Successful')
+    @api.doc(description="Generates a authentication token")
+    @api.expect(credential_parser, validate=True)
+    def get(self):
+        args = credential_parser.parse_args()
+
+        username = args.get('username')
+        password = args.get('password')
+
+        username = [username]
+        df_username = pd.read_csv('UserInformation.csv')
+        usernamelist = np.array(df_username[['username']]).tolist()
+        password_df = df_username.query(f'username == {username}')
+
+        if password_df.empty or username not in usernamelist:
+            output_response = {
+                "message :"f'username/password is incorrect'
+            }
+            return output_response, 401
+        else:
+            return {"token":auth.generate_token(username,password)}
+
 
 @api.route('/getFuelPredictions')
 class FuelPrice(Resource):
@@ -169,7 +270,7 @@ def preprocess_data(df):
 
 if __name__ == '__main__':
     drop_list = ['ServiceStationName', 'Address', 'Suburb']
-    df = load_xlsx('test2018.xlsx')
+    df = load_xlsx(dataset_file)
     df = df.drop(columns=drop_list)
 
     brand_le = preprocessing.LabelEncoder()
@@ -185,4 +286,4 @@ if __name__ == '__main__':
     model.fit(x_train, y_train)
 
     # run the application
-    app.run(debug=True)
+    app.run(debug=True, port=5100)
