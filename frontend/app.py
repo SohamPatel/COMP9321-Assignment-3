@@ -67,6 +67,7 @@ def predict():
     for prediction in predictions:
         prediction['predicted_price'] = "%.2f" % round(float(prediction['predicted_price']), 2)
         if (prediction['predicted_price'] < cheapest_price):
+            cheapest_price = prediction['predicted_price']
             cheapest_price = temp_price
     '''
     data = getFuelPredictions(postcode, brand, fuel_type)
