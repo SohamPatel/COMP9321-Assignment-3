@@ -5,11 +5,11 @@
 .nav-link.active {
     color: #071A29 !important;
     border: solid #071A29 !important;
-    border-width: 2px 2px 0px 2px !important;
+    border-width: 1px 1px 0px 1px !important;
 }
 
 .tab-pane.active {
     color: #071A29 !important;
     border: solid #071A29 !important;
-    border-width: 2px 2px 2px 2px !important;
+    border-width: 1px 1px 1px 1px !important;
 }
