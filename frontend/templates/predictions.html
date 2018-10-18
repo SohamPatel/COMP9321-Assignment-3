@@ -57,6 +57,8 @@ var myChart = new Chart(ctx, {
 			borderColor: '#071A29',
             data: price_dataset,
             fill: false,
+            pointRadius: {{point_radius|safe}},
+            pointBackgroundColor: {{point_colour|safe}},
         }]
     },
     options: {

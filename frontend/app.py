@@ -91,6 +91,16 @@ def predict():
         # Convert to datasets
         date_dataset = list(map(lambda x: x['date'], predictions))
         price_dataset = list(map(lambda x : x['predicted_price'], predictions))
+        point_radius = list()
+        point_colour = list()
+
+        for price in price_dataset:
+            if (price == cheapest_price):
+                point_radius.append(7)
+                point_colour.append('#4CAF50')
+            else:
+                point_radius.append(3)
+                point_colour.append('#3E78C2')
 
     else:
         # Unsuccessful retrieval of predctions
@@ -101,10 +111,12 @@ def predict():
         # Convert to datasets
         date_dataset = list()
         price_dataset = list()
+        point_radius = list()
 
     return render_template('predictions.html', postcode=postcode, brand=brand, fuel_type=fuel_type, 
                             cheapest_price=cheapest_price, cheapest_date=cheapest_date, predictions=predictions, 
-                            date_dataset=date_dataset, price_dataset=price_dataset)
+                            date_dataset=date_dataset, price_dataset=price_dataset, point_radius=point_radius,
+                            point_colour=point_colour)
 
 
 if __name__ == '__main__':
