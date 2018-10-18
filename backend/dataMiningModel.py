@@ -94,6 +94,18 @@ def trainingModel(df, drop = []):
 
     return mean_squared_error(y_test, y_pred)
 
+def getModel(df, drop = []):
+    '''
+    Return the mean squared error of a df
+    The put values that you want to keep in the drop array
+    Values can be ['Price','PriceUpdatedDate','FuelCode','Brand','Suburb','Address','ServiceStationName']
+    '''
+    X_train, y_train, X_test, y_test = load_csv(df, split_percentage=0.7, droped = drop)
+    model = linear_model.LinearRegression()
+    model.fit(X_train, y_train)
+
+    return model
+
 if __name__ == '__main__':
 
     #xlsx_to_csv_pd()
@@ -128,3 +140,8 @@ if __name__ == '__main__':
         pprint.pprint("Standard Deviation: " + str(np.std(information)))
         #pprint.pprint(information)
         print()
+
+    model = getModel(df, drop = ['Brand','FuelCode','PriceUpdatedDate'])
+    #test_data = []
+    #test_data.append(np.array([postcode, transform_brand, transform_fuelcode, transform_date]))
+    #model.predict(np.array(test_data))

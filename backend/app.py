@@ -169,7 +169,7 @@ def preprocess_data(df):
 
 if __name__ == '__main__':
     drop_list = ['ServiceStationName', 'Address', 'Suburb']
-    df = load_xlsx('test.xlsx')
+    df = load_xlsx('test2018.xlsx')
     df = df.drop(columns=drop_list)
 
     brand_le = preprocessing.LabelEncoder()
@@ -178,8 +178,8 @@ if __name__ == '__main__':
 
     # x = params, y = labels (i.e price)
     x_train, y_train = preprocess_data(df)
-    # model = RandomForestRegressor(n_estimators=500, oob_score=True, random_state=0)
-    # model.fit(x_train, y_train)
+    #model = RandomForestRegressor(n_estimators=500, oob_score=True, random_state=0)
+    #model.fit(x_train, y_train)
 
     model = linear_model.LinearRegression()
     model.fit(x_train, y_train)
