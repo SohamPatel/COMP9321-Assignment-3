@@ -4,6 +4,7 @@ from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
 URL = "http://127.0.0.1:5100"
+api_token = None
 
 def sendRequest(url, params):
     #url = "{url}/getBrands?{args}".format(url = URL, args = urllib.parse.urlencode(args))
@@ -16,8 +17,16 @@ def sendRequest(url, params):
     username = 'Alen'
     password = '123456'
     try:
-        r = requests.get(url = url, params = params, auth=HTTPBasicAuth(username, password))
+        api_token = requests.get(url = "{}/token".format(URL), params = {"username" : 'Tony', "password" : '123456'}).json()
+        
+        if 'token' not in api_token: # Check if unable to retrieve token
+            print("Uable to get a authorisation token. Invalid credentials.")
+            return None
+        
+        api_token = api_token['token']
+        r = requests.get(url = url, params = params, headers={'AUTH-TOKEN' : api_token})
         return r.json()
+
     except requests.exceptions.RequestException as e:  # This is the correct syntax
         print("Turn on API")
         #sys.exit(1)
@@ -25,15 +34,15 @@ def sendRequest(url, params):
 
 def getBrand(postcode):
     args = {"postcode" : postcode}
-    return sendRequest("{}/getBrands".format(URL),args)
+    return sendRequest(f"{URL}/getBrands", args)
 
 def getFuelTypes(postcode, brand):
     args = {"postcode" : postcode, "brand" : brand}
-    return sendRequest("{}/getFuelTypes".format(URL), args)
+    return sendRequest(f"{URL}/getFuelTypes", args)
 
 def getFuelPredictions(postcode, brand, fuel):
     args = {"postcode" : postcode, "brand" : brand, "fueltype" : fuel}
-    return sendRequest("{}/getFuelPredictions".format(URL), args)
+    return sendRequest(f"{URL}/getFuelPredictions", args)
 
 def getCheapest(data):
     '''
@@ -80,14 +89,17 @@ def predict():
             cheapest_price = temp_price
     '''
     data = getFuelPredictions(postcode, brand, fuel_type)
-    if 'predictions' in data:
+    if data:
+        # Successfully retrieved predictions
         predictions = data['predictions']
         predictions = roundPrice(predictions)
         cheapest_date,cheapest_price = getCheapest(predictions)
+    
     else:
-        predictions = []
-        cheapest_price = None
-        cheapest_date = 'Not Found'
+        # Unsuccessful retrieval of predctions
+        predictions = [{"date" : "No date found.", "predicted_price" : "No prediction available."}]
+        cheapest_date = "No date found."
+        cheapest_price = "No price found."
 
     return render_template('predictions.html', postcode=postcode, brand=brand, fuel_type=fuel_type, cheapest_price=cheapest_price, cheapest_date=cheapest_date, predictions=predictions)
 
