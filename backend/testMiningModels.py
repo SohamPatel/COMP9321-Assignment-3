@@ -6,6 +6,18 @@ import numpy as np
 import sys
 from sklearn.ensemble import RandomForestRegressor
 
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso
+from sklearn.linear_model import ElasticNet
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.ensemble import GradientBoostingRegressor
+
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
 def load_xlsx(xlsx_file):
     df = pd.read_excel(xlsx_file, index_col=0)
     df.dropna(inplace=True)
@@ -46,13 +58,16 @@ def train_model(not_dropping):
     # x_test = scaler.transform(x_test)
 
     global lowest_error, combination, highest_score, r2_combination
-    global rf_highest_score, rf_r2_combination, regression, random_forest
+    global rf_lowest_error, rf_combination, rf_highest_score, rf_r2_combination
+    global regression, random_forest
 
     if regression:
         model = linear_model.LinearRegression()
         model.fit(x_train, y_train)
         # test model
         y_pred = model.predict(x_test)
+
+        print("---Linear Regression---")
 
         # The mean squared error
         mse = mean_squared_error(y_test, y_pred)
@@ -80,19 +95,51 @@ def train_model(not_dropping):
 
         y_pred = rf.predict(x_test)
 
+        print("---Random Forest---")
+
+        # The mean squared error
+        mse = mean_squared_error(y_test, y_pred)
+        print("Mean squared error: %.2f" % mse)
+
         r2 = r2_score(y_test, y_pred)
         print("r2 score: %.2f\n" % r2)
+
+        if mse < rf_lowest_error:
+            rf_lowest_error = mse
+            rf_combination = not_dropping
 
         if r2 > rf_highest_score:
             rf_highest_score = r2
             rf_r2_combination = not_dropping
 
 
+def testMoreRegression():
+    x_train, y_train, x_test, y_test = split_df(df, ['Postcode', 'Brand', 'FuelCode', 'Address', 'PriceUpdatedDate'], 0.7)
+    pipelines = []
+    pipelines.append(('ScaledLR', Pipeline([('Scaler', StandardScaler()),('LR',LinearRegression())])))
+    pipelines.append(('ScaledLASSO', Pipeline([('Scaler', StandardScaler()),('LASSO', Lasso())])))
+    pipelines.append(('ScaledEN', Pipeline([('Scaler', StandardScaler()),('EN', ElasticNet())])))
+    pipelines.append(('ScaledKNN', Pipeline([('Scaler', StandardScaler()),('KNN', KNeighborsRegressor())])))
+    pipelines.append(('ScaledCART', Pipeline([('Scaler', StandardScaler()),('CART', DecisionTreeRegressor())])))
+    pipelines.append(('ScaledGBM', Pipeline([('Scaler', StandardScaler()),('GBM', GradientBoostingRegressor())])))
+
+    results = []
+    names = []
+    for name, model in pipelines:
+        kfold = KFold(n_splits=10, random_state=21)
+        cv_results = cross_val_score(model, x_train, y_train, cv=kfold, scoring='neg_mean_squared_error')
+        results.append(cv_results)
+        names.append(name)
+        msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+        print(msg)
+
 if __name__ == '__main__':
 
     # global vars to determine lowest error and highest score
     lowest_error = int(sys.maxsize)
     combination = []
+    rf_lowest_error = int(sys.maxsize)
+    rf_combination = []
     highest_score = 0
     r2_combination = []
     rf_highest_score = 0
@@ -225,6 +272,13 @@ if __name__ == '__main__':
     print("Params: Postcode, Brand, FuelCode, Address, Date")
     train_model(['Postcode', 'Brand', 'FuelCode', 'Address', 'PriceUpdatedDate'])
 
+    print("===RESULTS===")
+    print("---Linear Regression---")
     print("Lowest Error Combination: " + ' '.join(combination))
     print("Highest r2 Score Combination: " + ' '.join(r2_combination))
-    print("Highest rf r2 Score Combination: " + ' '.join(rf_r2_combination))
+    print("---Random Forest---")
+    print("Lowest Error Combination: " + ' '.join(rf_combination))
+    print("Highest r2 Score Combination: " + ' '.join(rf_r2_combination))
+
+    print()
+    testMoreRegression()
