@@ -57,7 +57,7 @@ def predict():
     for prediction in predictions:
         prediction['predicted_price'] = "%.2f" % round(float(prediction['predicted_price']), 2)
         if (prediction['predicted_price'] < cheapest_price):
-            cheapest_price = temp_price
+            cheapest_price = prediction['predicted_price']
 
     return render_template('predictions.html', postcode=postcode, brand=brand, fuel_type=fuel_type, cheapest_price=cheapest_price, cheapest_date=cheapest_date, predictions=predictions)
 
