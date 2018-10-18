@@ -12,7 +12,7 @@ def sendRequest(url, params):
     except requests.exceptions.RequestException as e:  # This is the correct syntax
         print("Turn on API")
         #sys.exit(1)
-    return None;
+    return None
 
 def getBrand(postcode):
     args = {"postcode" : postcode}
@@ -34,11 +34,11 @@ def getCheapest(data):
     '''
     minPricedItem = min(data, key=lambda x:x['predicted_price'])
 
-    return minPricedItem['date'], round(float(minPricedItem['predicted_price']), 2);
+    return minPricedItem['date'], round(float(minPricedItem['predicted_price']), 2)
 
 def getExpensive(data):
     maxPricedItem = max(data, key=lambda x:x['predicted_price'])
-    return maxPricedItem['date'], round(float(maxPricedItem['predicted_price']), 2);
+    return maxPricedItem['date'], round(float(maxPricedItem['predicted_price']), 2)
 
 def roundPrice(predictions):
     for i in range(0,len(predictions)):
