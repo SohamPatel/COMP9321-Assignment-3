@@ -11,6 +11,7 @@ import numpy as np
 from itsdangerous import SignatureExpired, JSONWebSignatureSerializer, BadSignature
 from functools import wraps
 from time import time
+from flask_cors import CORS
 
 class AuthenticationToken:
     def __init__(self, secret_key, expires_in):
@@ -42,6 +43,7 @@ auth = AuthenticationToken(SECRET_KRY,expires_in)
 
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app, authorizations={
     'API_KEY':{
         'type' :'apiKey',
