@@ -1,0 +1,15 @@
+.nav-link {
+    color: DimGray;
+}
+
+.nav-link.active {
+    color: #071A29 !important;
+    border: solid #071A29 !important;
+    border-width: 2px 2px 0px 2px !important;
+}
+
+.tab-pane.active {
+    color: #071A29 !important;
+    border: solid #071A29 !important;
+    border-width: 2px 2px 2px 2px !important;
+}

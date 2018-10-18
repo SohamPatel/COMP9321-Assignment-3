@@ -2,7 +2,7 @@
 {% block body_contents %}
 <link href="{{url_for('static', filename='styles/predictions.css')}}" rel="stylesheet">
 
-<!--Section: Best Features-->
+<!--Section: Prediction -->
 <section id="about" class="jumbotron text-center">
 
     <h2 class="mb-5 font-weight-bold">Predictions</h2>
@@ -18,30 +18,58 @@
         </div>
     </div>
 
-    <canvas id="myChart" width="100" height="40"></canvas>
+    <!-- Nav Tabs -->
+    <ul class="nav nav-tabs md-tabs nav-justified">
+        <!-- Graph Nav -->
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#graph_content" role="tab">
+                <h3 id="graph-nav"><i class="fa fa-line-chart" id="graph-icon"></i> Graph</h3>
+            </a>
+        </li>
 
-    <hr class="hr-dark wow fadeInLeft" data-wow-delay="0.3s">
+        <!-- Table Nav -->
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#table_content" role="tab">
+                <h3 id="table-nav"><i class="fa fa-table" id="table-icon"></i> Table</h3>
+            </a>
+        </li>
+    </ul>
+    
+    <!-- Tab Panels -->
+    <div class="tab-content card">
+        <!-- Graph Panel -->
+        <div class="tab-pane fade in show active" id="graph_content" role="tabpanel">
+            <br>
+            <canvas id="myChart" width="100" height="40"></canvas>
+            <br>
+        </div>
 
-    <table id="dtMaterialDesignExample" class="table table-striped" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th class="th-sm">Date
-                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                </th>
-                <th class="th-sm">Price (¢)
-                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in predictions %}
-                <tr>
-                    <td>{{row.date}}</td>
-                    <td>{{row.predicted_price}}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <!-- Table Panel -->
+        <div class="tab-pane fade" id="table_content" role="tabpanel">
+            <table id="dtMaterialDesignExample" class="table table-striped" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th class="th-sm">Date
+                            <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                        </th>
+                        <th class="th-sm">Price (¢)
+                            <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in predictions %}
+                    <tr>
+                        <td>{{row.date}}</td>
+                        <td>{{row.predicted_price}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+        </div>
+    </div>
+
 </section>
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
