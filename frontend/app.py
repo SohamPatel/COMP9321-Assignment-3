@@ -1,13 +1,22 @@
 from flask import Flask, render_template, url_for, request, jsonify
 import requests
+from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
 URL = "http://127.0.0.1:5100"
 
 def sendRequest(url, params):
     #url = "{url}/getBrands?{args}".format(url = URL, args = urllib.parse.urlencode(args))
+    '''
+    username,password
+    Tony,123456
+    Jack,134679
+    Alen,235689
+    '''
+    username = 'Alen'
+    password = '123456'
     try:
-        r = requests.get(url = url, params = params )
+        r = requests.get(url = url, params = params, auth=HTTPBasicAuth(username, password))
         return r.json()
     except requests.exceptions.RequestException as e:  # This is the correct syntax
         print("Turn on API")
@@ -71,9 +80,14 @@ def predict():
             cheapest_price = temp_price
     '''
     data = getFuelPredictions(postcode, brand, fuel_type)
-    predictions = data['predictions']
-    predictions = roundPrice(predictions)
-    cheapest_date,cheapest_price = getCheapest(predictions)
+    if 'predictions' in data:
+        predictions = data['predictions']
+        predictions = roundPrice(predictions)
+        cheapest_date,cheapest_price = getCheapest(predictions)
+    else:
+        predictions = []
+        cheapest_price = None
+        cheapest_date = 'Not Found'
 
     return render_template('predictions.html', postcode=postcode, brand=brand, fuel_type=fuel_type, cheapest_price=cheapest_price, cheapest_date=cheapest_date, predictions=predictions)
 
