@@ -45,18 +45,18 @@ auth = AuthenticationToken(SECRET_KRY,expires_in)
 app = Flask(__name__)
 CORS(app)
 api = Api(app, authorizations={
-    'API_KEY':{
-        'type' :'apiKey',
-        'in' : 'header',
-        'name' : 'AUTH-TOKEN'
+    'API_KEY': {
+            'type' :'apiKey',
+            'in' : 'header',
+            'name' : 'AUTH-TOKEN'
 
-    }
-},
-        security='API_KEY',
-        version='1.0',
-        default="Fuel Price",
-        title='NSW fuel prices prediction data service',
-        description='Data service which provide users a prediction of how the fuel prices will change in the future so they are able to make a better judgement on when to refill their fuel tanks.',
+        }
+    },
+    security='API_KEY',
+    version='1.0',
+    default="Fuel Price",
+    title='NSW fuel prices prediction data service',
+    description='Data service which provide users a prediction of how the fuel prices will change in the future so they are able to make a better judgement on when to refill their fuel tanks.',
 )
 
 def requires_auth(f):
