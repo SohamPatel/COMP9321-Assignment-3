@@ -1,5 +1,3 @@
-let postcodeInput
-
 window.onload = function() {
     authenticate();
     postcodeInput = document.getElementById('postcodeInput'); //postcode input element
@@ -22,21 +20,6 @@ function authenticate() {
 function setHeader(xhr) {
     xhr.setRequestHeader('AUTH-TOKEN', apiToken);
 }
-
-//TODO: implement timers to only update after time interval
-// rather than every key press
-var inputTimer;                 //timer
-var doneTypingInterval = 1000;  //time in ms (1 second)
-// let postcodeInput = document.getElementById('postcodeInput'); //postcode input element
-
-// start the countdown on keyup of postcode input box
-postcodeInput.addEventListener('keyup', () => {
-    clearTimeout(typingTimer);
-    // if the input field has a value and is 4 digits
-    if (postcodeInput.value.match(/\d{4}/)) {
-        typingTimer = setTimeout(postcodeDoneTyping, doneTypingInterval);
-    }
-});
 
 // used in brandDoneTyping to only make an API call if brand exists
 // within list
