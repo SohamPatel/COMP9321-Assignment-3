@@ -94,11 +94,11 @@
 
                             <form id="searchForm" method="get" action="{{url_for('predict')}}">
                               <input type="text" class="white-text" name="postcode" maxlength="4" pattern="[0-9]{4}"
-                                id="postcodeInput" placeholder="Postcode" oninput="postcodeDoneTyping()" required>
+                                id="postcodeInput" placeholder="Postcode" oninput="postcodeDoneTyping()" autocomplete="off" required>
                               <input type="text" class="white-text" list="Fuel Brand" name="brand" id="brandInput"
-                                placeholder="Fuel Brand" oninput="brandDoneTyping()" required>
+                                placeholder="Fuel Brand" oninput="brandDoneTyping()" autocomplete="off" required>
                               <datalist class="white-text" id="Fuel Brand"></datalist>
-                              <input type="text" class="white-text" list="Fuel Type" name="type" placeholder="Fuel Type" required>
+                              <input type="text" class="white-text" list="Fuel Type" name="type" placeholder="Fuel Type" autocomplete="off" required>
                               <datalist class="white-text" id="Fuel Type"></datalist>
                               <input id="searchButton" type="submit" class="btn btn-outline-white" value="Search">
                             </form>
