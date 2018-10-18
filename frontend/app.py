@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, jsonify
 import requests
 
 app = Flask(__name__)
@@ -75,6 +75,7 @@ def predict():
     cheapest_date,cheapest_price = getCheapest(predictions)
 
     return render_template('predictions.html', postcode=postcode, brand=brand, fuel_type=fuel_type, cheapest_price=cheapest_price, cheapest_date=cheapest_date, predictions=predictions)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
