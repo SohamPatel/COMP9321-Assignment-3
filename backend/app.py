@@ -132,6 +132,7 @@ class Token(Resource):
 
 @api.route('/getFuelPredictions')
 class FuelPrice(Resource):
+    @requires_auth
     @api.expect(fuel_price_parser, validate=True)
     @api.response(404, 'Not found')
     @api.response(200, 'Successful')
@@ -189,6 +190,7 @@ class FuelPrice(Resource):
 
 @api.route('/getBrands')
 class FuelBrands(Resource):
+    @requires_auth
     @api.expect(brand_parser, validate=True)
     @api.response(404, 'Not found')
     @api.response(200, 'Successful')
@@ -217,6 +219,7 @@ class FuelBrands(Resource):
 
 @api.route('/getFuelTypes')
 class FuelTypes(Resource):
+    @requires_auth
     @api.expect(fuel_type_parser, validate=True)
     @api.response(404, 'Not found')
     @api.response(200, 'Successful')
@@ -286,4 +289,4 @@ if __name__ == '__main__':
     model.fit(x_train, y_train)
 
     # run the application
-    app.run(debug=True, port=5100)
+app.run(debug=True, port=5100)
