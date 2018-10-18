@@ -1,23 +1,17 @@
 from flask import Flask, render_template, url_for, request, jsonify
 import requests
-from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
 URL = "http://127.0.0.1:5100"
 api_token = None
+auth_credentials = {
+    'username' : 'Tony',
+    'passowrd' : '123456'
+}
 
 def sendRequest(url, params):
-    #url = "{url}/getBrands?{args}".format(url = URL, args = urllib.parse.urlencode(args))
-    '''
-    username,password
-    Tony,123456
-    Jack,134679
-    Alen,235689
-    '''
-    username = 'Alen'
-    password = '123456'
     try:
-        api_token = requests.get(url = "{}/token".format(URL), params = {"username" : 'Tony', "password" : '123456'}).json()
+        api_token = requests.get(url = "{}/token".format(URL), params = auth_credentials).json()
         
         if 'token' not in api_token: # Check if unable to retrieve token
             print("Uable to get a authorisation token. Invalid credentials.")
