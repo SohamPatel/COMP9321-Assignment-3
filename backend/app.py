@@ -57,7 +57,7 @@ class FuelPrice(Resource):
             transform_fuelcode = list(fuelcode_le.transform([fuelcode]))[0]
             for i in range(1, 15):
                 curr_date = today_date + timedelta(days=i)
-                curr_date = curr_date.strftime('%Y/%m/%d')
+                curr_date = curr_date.strftime('%Y-%m-%d')
                 dates.append(curr_date)
 
                 # need to convert new date to label. needs to be fitted into encoder
@@ -164,7 +164,7 @@ def preprocess_data(df):
     y = df['Price'].values
 
     # uncomment below when debugging, just so it loads faster
-    # return x[:int(len(x)*0.05)], y[:int(len(y)*0.05)]
+    # return x[0:int(len(x)*0.05)], y[0:int(len(y)*0.05)]
     return x, y
 
 if __name__ == '__main__':
