@@ -16,12 +16,12 @@
 </head>
 <body>
      <!-- SCRIPTS -->
+     <script src="{{url_for('static', filename='scripts/dynamic_lists.js')}}"></script>
      <script src="{{url_for('static', filename='scripts/jquery-3.3.1.min.js')}}"></script>
      <script src="{{url_for('static', filename='scripts/popper.min.js')}}"></script>
      <script src="{{url_for('static', filename='scripts/bootstrap.min.js')}}"></script>
      <script src="{{url_for('static', filename='scripts/mdb.min.js')}}"></script>
      <script src="{{url_for('static', filename='scripts/Chart.min.js')}}"></script>
-
      <script src="{{url_for('static', filename='scripts/base.js')}}"></script>
 
     <!--Main Navigation-->
@@ -93,16 +93,13 @@
                             <h5 class="white-text my-5">Get a prediction of fuel prices, so you know when to refill your tank for less!</h5>
 
                             <form id="searchForm" method="get" action="{{url_for('predict')}}">
-                              <input type="text" class="white-text" name="postcode" maxlength="4" pattern="[0-9]{4}" placeholder="Postcode" required>
-                              <input type="text" class="white-text" name="brand" placeholder="Fuel Brand" required>
+                              <input type="text" class="white-text" name="postcode" maxlength="4" pattern="[0-9]{4}"
+                                id="postcodeInput" placeholder="Postcode" oninput="postcodeDoneTyping()" required>
+                              <input type="text" class="white-text" list="Fuel Brand" name="brand" id="brandInput"
+                                placeholder="Fuel Brand" oninput="brandDoneTyping()" required>
+                              <datalist class="white-text" id="Fuel Brand"></datalist>
                               <input type="text" class="white-text" list="Fuel Type" name="type" placeholder="Fuel Type" required>
-                              <datalist class="white-text" id="Fuel Type">
-                                <option value="E10">
-                                <option value="U91">
-                                <option value="P98">
-                                <option value="DL">
-                                <option value="LPG">
-                              </datalist>
+                              <datalist class="white-text" id="Fuel Type"></datalist>
                               <input id="searchButton" type="submit" class="btn btn-outline-white" value="Search">
                             </form>
                         </div>
