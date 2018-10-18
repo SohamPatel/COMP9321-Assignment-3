@@ -18,6 +18,8 @@
         </div>
     </div>
 
+    <canvas id="myChart" width="100" height="40"></canvas>
+
     <hr class="hr-dark wow fadeInLeft" data-wow-delay="0.3s">
 
     <table id="dtMaterialDesignExample" class="table table-striped" cellspacing="0" width="100%">
@@ -41,4 +43,36 @@
         </tbody>
     </table>
 </section>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var date_dataset = {{date_dataset|safe}};
+var price_dataset = {{price_dataset|safe}};
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: date_dataset,
+        datasets: [{
+            label: 'Price (¢)',
+            backgroundColor: '#3E78C2',
+			borderColor: '#071A29',
+            data: price_dataset,
+            fill: false,
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'Predicted prices of {{fuel_type|safe}} fuel at area {{postcode|safe}}'
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: false,
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
+    }
+});
+</script>
 {% endblock %}

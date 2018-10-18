@@ -88,13 +88,23 @@ def predict():
         predictions = roundPrice(predictions)
         cheapest_date,cheapest_price = getCheapest(predictions)
 
+        # Convert to datasets
+        date_dataset = list(map(lambda x: x['date'], predictions))
+        price_dataset = list(map(lambda x : x['predicted_price'], predictions))
+
     else:
         # Unsuccessful retrieval of predctions
         predictions = [{"date" : "No date found.", "predicted_price" : "No prediction available."}]
         cheapest_date = "No date found."
         cheapest_price = "No price found."
 
-    return render_template('predictions.html', postcode=postcode, brand=brand, fuel_type=fuel_type, cheapest_price=cheapest_price, cheapest_date=cheapest_date, predictions=predictions)
+        # Convert to datasets
+        date_dataset = list()
+        price_dataset = list()
+
+    return render_template('predictions.html', postcode=postcode, brand=brand, fuel_type=fuel_type, 
+                            cheapest_price=cheapest_price, cheapest_date=cheapest_date, predictions=predictions, 
+                            date_dataset=date_dataset, price_dataset=price_dataset)
 
 
 if __name__ == '__main__':
