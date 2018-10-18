@@ -12,19 +12,18 @@ auth_credentials = {
 def sendRequest(url, params):
     try:
         api_token = requests.get(url = "{}/token".format(URL), params = auth_credentials).json()
-        
+
         if 'token' not in api_token: # Check if unable to retrieve token
             print("Uable to get a authorisation token. Invalid credentials.")
             return None
-        
+
         api_token = api_token['token']
         r = requests.get(url = url, params = params, headers={'AUTH-TOKEN' : api_token})
         return r.json()
 
-    except requests.exceptions.RequestException as e:  # This is the correct syntax
-        print("Turn on API")
-        #sys.exit(1)
-    return None
+    except requests.exceptions.RequestException:  # This is the correct syntax
+        # unable to authenticate
+        return None
 
 def getBrand(postcode):
     args = {"postcode" : postcode}
@@ -88,7 +87,7 @@ def predict():
         predictions = data['predictions']
         predictions = roundPrice(predictions)
         cheapest_date,cheapest_price = getCheapest(predictions)
-    
+
     else:
         # Unsuccessful retrieval of predctions
         predictions = [{"date" : "No date found.", "predicted_price" : "No prediction available."}]
