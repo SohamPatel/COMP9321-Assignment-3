@@ -22,7 +22,7 @@ def load_xlsx(xlsx_file):
     df = pd.read_excel(xlsx_file, index_col=0)
     df.dropna(inplace=True)
     df = df.reset_index()
-    # df = shuffle(df, random_state=0)
+    df = shuffle(df, random_state=0)
     return df
 
 
