@@ -22,7 +22,7 @@ def load_xlsx(xlsx_file):
     df = pd.read_excel(xlsx_file, index_col=0)
     df.dropna(inplace=True)
     df = df.reset_index()
-    df = shuffle(df, random_state=0)
+    # df = shuffle(df, random_state=0)
     return df
 
 
@@ -163,6 +163,34 @@ if __name__ == '__main__':
     df['FuelCode'] = le.fit_transform(df['FuelCode'].values)
     df['Address'] = le.fit_transform(df['Address'].values)
     df['PriceUpdatedDate'] = le.fit_transform(df['PriceUpdatedDate'].values)
+
+    # BELOW attempts to calculate mean from past 3 days
+    # HOWEVER - generation is VERY SLOW!
+    # df['S_3'] = np.nan
+    # for index, rows in df.iterrows():
+    #     if not df['S_3'][index]:
+    #         continue
+
+    #     selected_df = df.query(f'Postcode == {rows["Postcode"]} and Brand == {rows["Brand"]} and FuelCode == {rows["FuelCode"]} and Address == {rows["Address"]}')
+    #     # this resets index to start from 0
+    #     # and stores prev index in col = 'index'
+    #     selected_df.reset_index(inplace=True)
+
+    #     # print(selected_df.index)
+    #     # for i, r in selected_df.iterrows():
+    #     #     print(",".join([str(r[column]) for column in selected_df]))
+
+    #     for i in range(len(selected_df)):
+    #         if i > 2:
+    #             # set df with index stored in selected index S_3 value to the mean of past 3
+    #             df.loc[selected_df['index'][i], 'S_3'] = selected_df['Price'][i-3:i].mean()
+    #         else:
+    #             df.loc[selected_df['index'][i], 'S_3'] = None
+
+    #     # selected_df = df.query(f'Postcode == {rows["Postcode"]} and Brand == {rows["Brand"]} and FuelCode == {rows["FuelCode"]} and Address == {rows["Address"]}')
+    #     # for i, r in selected_df.iterrows():
+    #     #     print(",".join([str(r[column]) for column in selected_df]))
+    #     # break
 
     # Use Postcode as only parameter
     print("Params: Postcode")
